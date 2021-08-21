@@ -2,6 +2,15 @@ const UserNameField=document.querySelector('#UserNameField');
 const UsernameFeedBackSection=document.querySelector('.username-feedback')
 const EmailField=document.querySelector('#EmailField');
 const EmailFeedBackSection=document.querySelector('.email-feedback')
+const togglePassword = document.querySelector('#togglePassword');
+const password = document.querySelector('#PasswordField');
+
+togglePassword.addEventListener('click', function (e) {
+    const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+    password.setAttribute('type', type);
+    this.classList.toggle('fa-eye-slash');
+});
+
 
 UserNameField.addEventListener("keyup", (value) => {
     const UserNameValidation = value.target.value;
