@@ -14,57 +14,65 @@
   
                   <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Sign up</p>
   
-                  <form action="{% url 'register' %}" class="mx-1 mx-md-6" method="POST">
+                  <form action="{% url 'register' %}" class="mx-1 mx-md-6 needs-validation" method="post">
 
                     {% csrf_token %}
 
                     {% include 'partials/messages.html'%}
                     <div class="d-flex flex-row align-items-center mb-4">
-                      <i class="fa fa-user fa-lg me-3 fa-fw"></i>
+                      <i class="fa fa-id-card fa-lg me-3 fa-fw"></i>
                       <div class="form-outline flex-fill mb-0">
-                        <i class="uil uil-user"></i>
-                        <input type="text" id="UserNameField" placeholder="Username" class="form-control" />
+                        <input type="text" name="fullname" id="FullNameField" placeholder="Full Name" class="form-control" value="{{fieldValues.fullname}}" style="border-radius:15px ; display: inline-block;" required/>
                       </div>
                     </div>
-                    <div class="username-feedback invalid-feedback " style="display:none;">
-                      
+                    <div class="d-flex flex-row align-items-center mb-4">
+                      <i class="fa fa-user fa-lg me-3 fa-fw"></i>
+                      <div class="form-outline flex-fill mb-0">
+                        <input type="text" name="username" id="UserNameField" placeholder="Username" class="form-control" value="{{fieldValues.username}}" style="border-radius:15px" required/>
+                        <div class="username-feedback invalid-feedback " style="display:none;">
+                        </div>
+                      </div>
                     </div>
-
                     <div class="d-flex flex-row align-items-center mb-4">
                       <i class="fa fa-envelope fa-lg me-3 fa-fw"></i>
                       <div class="form-outline flex-fill mb-0">
-                        <input type="email" id="EmailField" placeholder="Email" class="form-control" />
-                      </div>
-                    </div>
-                    <div class="email-feedback invalid-feedback " style="display:none;">
-                    </div>
-  
-                    <div class="d-flex flex-row align-items-center mb-4">
-                      <i class="fa fa-lock fa-lg me-3 fa-fw"></i>
-                      <div class="form-outline flex-fill mb-0">
-                        <input type="password" id="PasswordField" placeholder="Password" class="form-control"/> 
-                        <i class="fa fa-eye" id="togglePassword" style="margin-left: 360px; cursor: pointer; margin-top:-32px; transition:3s;"></i> 
-                        <div class="password-strength" style="position: relative; width:100%; height:20px; margin-top:10px; text-align:center; border-radius:5px; transition:all 100ms ease-in-out; background: #f2f2f2; display:none">
-                          <span>Weak</span>
+                        <input type="email" name="email" id="EmailField" placeholder="Email" class="form-control" value="{{fieldValues.email}}" style="border-radius:15px" required/>
+                        <div class="email-feedback invalid-feedback " style="display:none;">
                         </div>
                       </div>
                     </div>
                     
-                  
+
+                    <div class="d-flex flex-row align-items-center mb-4">
+                     <i class="fa fa-lock fa-lg me-3 fa-fw"></i>
+                      <div class="form-outline flex-fill mb-0">
+                        <div class="password-field-area" style="position: relative;">
+                          <input type="password" name="password" id="PasswordField" placeholder="Password" class="form-control" style="border-radius:15px" required/> 
+                          <i class="fa fa-eye" id="togglePassword" style="position:absolute; top: 17px; right: 8px; cursor: pointer;"></i>
+                        </div>
+                        <div class="password-strength" style="position: relative; margin-top:10px; text-align:center; border-radius:5px; transition:all 100ms ease-in-out; background: #f2f2f2; display:none">
+                          <span>Weak</span>
+                        </div>
+                      </div>
+                    </div>
                     <div class="form-check d-flex justify-content-center mb-5">
                       <input
                         class="form-check-input me-2"
                         type="checkbox"
                         value=""
                         id="TosCheckbox"
+                        required
                       />
                       <label class="form-check-label" for="TosCheckbox">
                         I agree all statements in <a href="#!">Terms of service</a>
                       </label>
                     </div>
+                    <div class="invalid-feedback">
+                      You must agree before submitting.
+                    </div>
                     
                     <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                      <button type="submit" class="btn btn-primary btn-lg">Register</button>
+                      <button type="submit" class="btn btn-primary btn-lg submit-btn" >Register</button>
                     </div>
   
                   </form>

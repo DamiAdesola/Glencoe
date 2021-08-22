@@ -5,6 +5,10 @@ const EmailFeedBackSection=document.querySelector('.email-feedback')
 const togglePassword = document.querySelector('#togglePassword');
 const password = document.querySelector('#PasswordField');
 const strengthBadge = document.querySelector('.password-strength')
+const submitBtn = document.querySelector(".submit-btn")
+
+//NEED TO IMPLEMENT Validation for if both/or email and username are invalid
+// Need to implemnt checker for TOS
 
 togglePassword.addEventListener('click', function (e) {
     const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
@@ -12,12 +16,11 @@ togglePassword.addEventListener('click', function (e) {
     this.classList.toggle('fa-eye-slash');
 });
 
-
 UserNameField.addEventListener("keyup", (value) => {
     const UserNameValidation = value.target.value;
     UserNameField.classList.remove('is-invalid');
     UsernameFeedBackSection.style.display = "none";
-
+    
     if (UserNameValidation.length > 0){
         fetch("/authentication/validate-username",{
             body:JSON.stringify({username: UserNameValidation}), 
@@ -25,13 +28,23 @@ UserNameField.addEventListener("keyup", (value) => {
         })
             .then(res => res.json())
             .then((data) => {
-                console.log("response",data);
                 if (data.username_error){
                     UserNameField.classList.add('is-invalid');
                     UsernameFeedBackSection.style.display = "block";
                     UsernameFeedBackSection.innerHTML = `<p>${data.username_error}</p> `
+                    submitBtn.disabled = true;
+                }
+                else{
+                    UserNameField.classList.remove('is-invalid');
+                    UserNameField.classList.add('is-valid');
+                    submitBtn.disabled=false;
                 }
             })
+    }
+
+    if (UserNameValidation.length <= 0){
+        UserNameField.classList.remove('is-valid');
+        UserNameField.classList.add('is-invalid');
     }
     
 });
@@ -40,6 +53,7 @@ UserNameField.addEventListener("keyup", (value) => {
 EmailField.addEventListener("keyup", (value) => {
     const EmailValidation = value.target.value;
     EmailField.classList.remove('is-invalid');
+    EmailField.classList.add('is-valid');
     EmailFeedBackSection.style.display = "none";
 
     if (EmailValidation.length > 0){
@@ -49,11 +63,14 @@ EmailField.addEventListener("keyup", (value) => {
         })
             .then(res => res.json())
             .then((data) => {
-                console.log("response",data);
                 if (data.email_error){
                     EmailField.classList.add('is-invalid');
                     EmailFeedBackSection.style.display = "block";
                     EmailFeedBackSection.innerHTML = `<p>${data.email_error}</p> `
+                    submitBtn.disabled = true;
+                }
+                else{
+                    submitBtn.disabled=false;
                 }
             })
     }
@@ -91,7 +108,7 @@ password.addEventListener("input", () => {
     strengthBadge.style.display= 'block'
     clearTimeout(timeout);
 
-    timeout = setTimeout(() => StrengthChecker(password.value), 250);
+    timeout = setTimeout(() => StrengthChecker(password.value), 200);
  
     if(password.value.length !== 0){
         strengthBadge.style.display != 'block'
