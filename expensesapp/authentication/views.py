@@ -1,10 +1,20 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.views import View
 import json
 from django.http import JsonResponse
 from django.contrib.auth.models import User
 from validate_email import validate_email 
 from django.contrib import messages
+from django.core.mail import EmailMessage
+from django.contrib import auth
+from django.core.mail import send_mail
+from django.utils.encoding import force_bytes, force_text, DjangoUnicodeDecodeError
+from django.contrib.sites.shortcuts import get_current_site
+from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+from django.urls import reverse
+from .utils import TokenGenerator, token_generator
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import get_template
 # Create your views here.
 
 class RegisterationView(View):
@@ -34,17 +44,67 @@ class RegisterationView(View):
                     messages.error(request,'Password too short')
                     return render(request, 'authentication/register.html',context)
                 
+                
                 user = User.objects.create_user(username=username,email=email)
                 user.first_name = firstname
                 user.last_name = lastname
                 user.set_password(password)
                 user.is_active = False
                 user.save()
+            
+                uidb64 = urlsafe_base64_encode(force_bytes((user.pk)))
+
+                domain = get_current_site(request).domain
+
+                link = reverse('activate',kwargs={'uidb64':uidb64, 'token':token_generator.make_token(user)})
+                
+                activate_url = 'http://'+domain+link
+
+                email_subject = 'Welcome to Glencoe Expenses: Activate you account'
+
+                activation_template = get_template('authentication/activate-email.html')
+                activation_render_data = {'firstname':firstname,'lastname':lastname, 'activate_url':activate_url }
+                html_content = activation_template.render(activation_render_data)
+
+                email = EmailMultiAlternatives(
+                    email_subject,
+                    html_content,
+                    'glencoetester@gmail.com',
+                    [email],
+                )
+                email.attach_alternative(html_content, "text/html")
+                email.send(fail_silently=False)
                 messages.success(request,'Account successfully created')
                 return render(request, 'authentication/register.html')
         return render(request, 'authentication/register.html')
         
+class VerificationView(View):
+    def get(self,request,uidb64, token):
+        try:
+            id = force_text(urlsafe_base64_decode(uidb64))
+            user = User.objects.get(id=id)
+            
+            if not token_generator.check_token(user,token):
+                return redirect('login'+'?message='+'User already activated')
 
+            if user.is_active == True:
+                return redirect('login')
+            
+            user.is_active = True
+            user.save()
+
+            messages.success(request,'Account succesfully activated')
+
+            return redirect('login')
+
+        except Exception as e:
+            pass
+        
+        return redirect('login')
+       
+class LoginView(View):
+    def get(self,request):
+        return render(request,'authentication/login.html')
 class EmailValidationView(View):
     def post(self,request):
         data = json.loads(request.body)
@@ -57,7 +117,6 @@ class EmailValidationView(View):
             return JsonResponse({'email_error': 'Sorry email already exists. Please Login'}, status=409)
 
         return JsonResponse({'email_valid':True})
-
 class UsernameValidationView(View):
     def post(self,request):
         data = json.loads(request.body)
