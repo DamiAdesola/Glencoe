@@ -63,7 +63,7 @@ class RegisterationView(View):
                 
                 activate_url = 'http://'+domain+link
 
-                email_subject = 'Welcome to Glencoe Expenses: Activate you account'
+                email_subject = 'Welcome to Glencoe Income Tracker: Activate you account'
 
                 activation_template = get_template('authentication/activate-email.html')
                 activation_render_data = {'firstname':firstname,'lastname':lastname, 'activate_url':activate_url }

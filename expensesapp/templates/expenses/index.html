@@ -86,6 +86,25 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
+                            <h4 class="card-title">Expenses</h4>
+                        </div>
+                        <div class="card-body">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a>Expenses</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page">My Expenses</li>
+                                </ol> 
+                                <a href="{% url 'add-expense' %}" class="btn btn-primary">Add Expense</a>
+
+                            </nav> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
                             <h4>Profile Visit</h4>
                         </div>
                         <div class="card-body">
@@ -217,7 +236,7 @@
                         </div>
                         <div class="ms-4 name">
                             <h5 class="font-bold">{{request.user.get_full_name}}</h5>
-                            <h6 class="text-muted mb-0">@{{request.user.username}}</h6>
+                            <h6 class="text-muted">@{{request.user.username}}</h6>
                             <form action="{% url  'logout' %}" method="POST">
                                 {% csrf_token %}
                                 <input

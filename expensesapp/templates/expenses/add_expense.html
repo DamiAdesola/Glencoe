@@ -1,8 +1,81 @@
 {% extends 'base.html' %}
 
+
 {% block content %}
 
 <h1> Add Expense</h1>
 
+<div class="card">
+    <div class="card-body">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'expenses' %}">Expenses</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Add Expense</li>
+            </ol>
+        </nav> 
+        <form action="{% url 'add-expense' %}" method="post">
+            {% csrf_token %}
+            <section id="basic-vertical-layouts">
+                <div class="row match-height">
+                    <div class="col-md-6 col-12">
+                        <div class="card">
+                            {% include 'partials/messages.html'%}
+                            <div class="card-content">
+                                <div class="card-body">
+                                    <form class="form form-vertical">
+                                        <div class="form-body">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <div class="form-group">
+                                                        <label for="first-name-vertical">Amount</label>
+                                                        <input type="text" id="first-name-vertical" class="form-control"
+                                                            name="amount" placeholder="Amount" value="{{current_values.amount}}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <div class="form-group">
+                                                        <label for="email-id-vertical">Description</label>
+                                                        <input type="text" id="description" class="form-control"
+                                                            name="description" placeholder="Description" value="{{current_values.description}}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-8">
+                                                    <div class="input-group mb-3">
+                                                        <label class="input-group-text" for="inputGroupSelect01">Category</label>
+                                                        <select class="form-select" name="category" id="inputGroupSelect01">
+                                                            <option name="category"select>GENERAL</option> 
+                                                            {% for category in categories %}
+
+                                                            <option name="category" value="{{category.name}}">{{category.name}}</option>                                                            
+
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <div class="form-group">
+                                                        <label for="password-vertical">Date of Expense</label>
+                                                        <input type="date" id="password-vertical" class="form-control"
+                                                            name="expense-date">
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 d-flex justify-content-end">
+                                                    <button type="submit" class="btn btn-primary me-1 mb-1">Submit</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </form>
+        
+        
+    </div>
+    
+</div>
 {% endblock content %}
 
