@@ -31,7 +31,7 @@ class RegisterationView(View):
         username = request.POST['username']
         email = request.POST['email']
         password = request.POST['password']
-
+        confirm_password = request.POST['confirm-password']
 
 
         context = {
@@ -44,6 +44,9 @@ class RegisterationView(View):
                     messages.error(request,'Password too short')
                     return render(request, 'authentication/register.html',context)
                 
+                if password != confirm_password:
+                    messages.error(request,'Passwords do not match')
+                    return render(request, 'authentication/register.html',context)
                 
                 user = User.objects.create_user(username=username,email=email)
                 user.first_name = firstname
