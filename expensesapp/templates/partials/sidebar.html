@@ -1,32 +1,102 @@
 {% load static %}
-<div class="sidebar-wrapper active">
-    <div class="sidebar-header">
-        <div class="d-flex justify-content-between">
-            <div class="logo">
-                <a href="index.html"><img src="{% static 'images/logo/logo.png' %}" alt="Logo" srcset=""></a>
-            </div>
-            <div class="toggler">
-                <a href="#" class="sidebar-hide d-xl-none d-block"><i class="bi bi-x bi-middle"></i></a>
-            </div>
-        </div>
+<div id="sidebar" class="active">
+    <div class="sidebar-wrapper active">
+<div class="sidebar-header">
+<div class="d-flex justify-content-between">
+    <div class="logo">
+        <a href="#"><img src="{% static 'images/logo/glencoe.png' %}" alt="Logo" srcset=""></a>
     </div>
-    <div class="sidebar-menu">
-        <ul class="menu">{% for sidebarItem in sidebarItems %}{% if sidebarItem.isTitle %}
-            <li class="sidebar-title">{{sidebarItem.name}}</li>
-            {% else %}
-            <li class="sidebar-item {{ 'active' if (sidebarItem.url == filename or filename|startsWith(sidebarItem.key)) }} {{'has-sub' if sidebarItem.submenu.length > 0 }}">
-                <a href="{{sidebarItem.url if sidebarItem.url!==undefined else '#'}}" class='sidebar-link'>
-                    <i class="bi bi-{{ sidebarItem.icon }}"></i>
-                    <span>{{sidebarItem.name}}</span>
-                </a>{% if sidebarItem.submenu.length > 0 %}
-                <ul class="submenu {{ 'active' if (sub.url == filename or filename|startsWith(sidebarItem.key)) }}">{% for sub in sidebarItem.submenu %}
-                    <li class="submenu-item {{ 'active' if sub.url == filename }}">
-                        <a href="{{ sub.url }}">{{ sub.name }}</a>
-                    </li>{% endfor %}
-                </ul>{% endif %}
+    <div class="toggler">
+        <a href="#" class="sidebar-hide d-xl-none d-block"><i class="bi bi-x bi-middle"></i></a>
+    </div>
+</div>
+</div>
+<div class="sidebar-menu">
+<ul class="menu">
+    <li class="sidebar-title">Menu</li>
+    
+    <li class="sidebar-item active ">
+        <a href="{% url 'expenses' %}" class='sidebar-link'>
+            <i class="bi bi-grid-fill"></i>
+            <span>Dashboard</span>
+        </a>
+    </li>    
+    <li class="sidebar-item  ">
+        <a href="application-email.html" class='sidebar-link'>
+            <i class="bi bi-envelope-fill"></i>
+            <span>Income Summary</span>
+        </a>
+    </li>
+    
+    <li class="sidebar-item  ">
+        <a href="application-chat.html" class='sidebar-link'>
+            <i class="bi bi-chat-dots-fill"></i>
+            <span>Expenses Summary</span>
+        </a>
+    </li>
+    <li class="sidebar-title">Authentication</li>
+    
+    <li class="sidebar-item  has-sub">
+        <a href="#" class='sidebar-link'>
+            <i class="bi bi-person-badge-fill"></i>
+            <span>General Settings</span>
+        </a>
+        <ul class="submenu ">
+            <li class="submenu-item ">
+                <a href="auth-login.html">Login</a>
             </li>
-            {% endif %}{% endfor %}
+            <li class="submenu-item ">
+                <a href="auth-register.html">Register</a>
+            </li>
+            <li class="submenu-item ">
+                <a href="auth-forgot-password.html">Forgot Password</a>
+            </li>
         </ul>
-    </div>
-    <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>
+    </li>
+    
+    <li class="sidebar-item  has-sub">
+        <a href="#" class='sidebar-link'>
+            <i class="bi bi-x-octagon-fill"></i>
+            <span>Account Settings</span>
+        </a>
+        <ul class="submenu ">
+            <li class="submenu-item ">
+                <a href="error-403.html">403</a>
+            </li>
+            <li class="submenu-item ">
+                <a href="error-404.html">404</a>
+            </li>
+            <li class="submenu-item ">
+                <a href="error-500.html">500</a>
+            </li>
+        </ul>
+    </li>
+    
+    <li class="sidebar-title">Raise Support</li>
+    
+    <li class="sidebar-item  ">
+        <a href="https://zuramai.github.io/mazer/docs" class='sidebar-link'>
+            <i class="bi bi-life-preserver"></i>
+            <span>Documentation</span>
+        </a>
+    </li>
+    
+    <li class="sidebar-item  ">
+        <a href="https://github.com/zuramai/mazer/blob/main/CONTRIBUTING.md" class='sidebar-link'>
+            <i class="bi bi-puzzle"></i>
+            <span>Contribute</span>
+        </a>
+    </li>
+    
+    <li class="sidebar-item  ">
+        <a href="https://github.com/zuramai/mazer#donate" class='sidebar-link'>
+            <i class="bi bi-cash"></i>
+            <span>Donate</span>
+        </a>
+    </li>
+    
+</ul>
+</div>
+<button class="sidebar-toggler btn x"><i data-feather="x"></i></button>
+</div>
 </div>
